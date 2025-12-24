@@ -1,8 +1,8 @@
 import { useEffect, useState, useCallback, useRef } from 'react'
 import ContactPage from './pages/Contact'
 import SubscribePage from './pages/Subscribe'
-import SignInPage from './pages/SignIn'
 import AboutPage from './pages/About'
+import ServicePage from './pages/Service'
 import './App.css'
 
 function App() {
@@ -173,9 +173,9 @@ function App() {
             ></div>
           )}
           <div className={`nav-right ${mobileMenuOpen ? 'mobile-open' : ''}`}>
-            <button className="nav-link" onClick={() => { scrollToSection(''); setMobileMenuOpen(false); }}>Home</button>
+            <button className="nav-link" onClick={() => { setCurrentPage('home'); setMobileMenuOpen(false); }}>Home</button>
             <button className="nav-link" onClick={() => { setCurrentPage('about'); setMobileMenuOpen(false); }}>About</button>
-            <button className="nav-link" onClick={() => { scrollToSection(''); setMobileMenuOpen(false); }}>Service</button>
+            <button className="nav-link" onClick={() => { setCurrentPage('service'); setMobileMenuOpen(false); }}>Service</button>
             <button className="nav-link" onClick={() => { setCurrentPage('contact'); setMobileMenuOpen(false); }}>Contact</button>
             <button className="nav-link" onClick={() => { setCurrentPage('subscribe'); setMobileMenuOpen(false); }}>Subscribe</button>
           </div>
@@ -184,8 +184,7 @@ function App() {
         {currentPage === 'contact' ? <ContactPage /> : 
          currentPage === 'subscribe' ? <SubscribePage /> : 
          currentPage === 'about' ? <AboutPage /> :
-         currentPage === 'signin' ? <SignInPage /> : 
-         (
+         currentPage === 'service' ? <ServicePage /> : (
           <main>
             {/* Enhanced Hero */}
             <section className="hero" data-animate="fade-up">
@@ -229,12 +228,12 @@ function App() {
                   </div>
                 </div>
 
-                <div className="hero-floating hero-floating--right animate-float" data-animate-child style={{ animationDelay: '1s' }}>
+               <a href='https://www.instagram.com/urbandesiii/?hl=en'><div className="hero-floating hero-floating--right animate-float" data-animate-child style={{ animationDelay: '1s' }}>
                   <div className="floating-icon">⬇️</div>
                   <div className="floating-text">
                     <div className="floating-title">Instagram</div>
                   </div>
-                </div>
+                </div></a>
 
                 <div className="hero-floating hero-floating--bottom animate-float" data-animate-child style={{ animationDelay: '1.2s' }}>
                   <div className="floating-icon">✉️</div>
@@ -324,22 +323,22 @@ function App() {
                   links: [
                     { name: "Home", action: () => scrollToSection('') },
                     { name: "About", action: () => setCurrentPage('about') },
-                    { name: "Services", action: () => scrollToSection('') },
+                    { name: "Services", action: () => scrollToSection('service') },
                     { name: "Contact", action: () => setCurrentPage('contact') },
                     { name: "Subscribe", action: () => setCurrentPage('subscribe') }
                   ]
                 },
                 { title: "Resources", links: ["Blog", "FAQ", "Tutorials", "Case Studies", "Documentation"] },
                 { title: "Legal", links: ["Privacy Policy", "Terms of Service", "Cookie Policy", "Disclaimer"] },
-                { title: "Connect", links: ["Instagram", "TikTok", "Twitter", "LinkedIn", "YouTube"] },
+                { title: "Connect", links: ["Instagram", "TikTok", "Twitter","Email", "YouTube"] },
                 { 
                   title: "Support", 
                   links: [
-                    { name: "Help Center", action: () => {} },
+                    { name: "Help Center", action: () => setCurrentPage('contact') },
                     { name: "Contact Us", action: () => setCurrentPage('contact') },
-                    { name: "Report Issue", action: () => {} },
-                    { name: "Feedback", action: () => {} },
-                    { name: "Status", action: () => {} }
+                    { name: "Report Issue", action: () => setCurrentPage('contact') },
+                    { name: "Feedback", action: () => setCurrentPage('contact') },
+                    { name: "Status", action: () => setCurrentPage('contact') }
                   ]
                 }
               ].map((col, colIndex) => (

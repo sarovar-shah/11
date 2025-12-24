@@ -5,11 +5,26 @@
 }
 
 :root {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+  --font-aileron: 'Aileron', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
   color: #ffffff;
   background-color: #000000;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Apply Aileron to all elements */
+* {
+  font-family: var(--font-aileron);
+}
+
+/* Ensure form elements inherit the font */
+input,
+button,
+textarea,
+select {
+  font-family: inherit;
 }
 
 body {
@@ -18,6 +33,7 @@ body {
   min-height: 100vh;
   background-color: #000000;
   color: #ffffff;
+  font-family: var(--font-aileron);
 }
 
 a {
