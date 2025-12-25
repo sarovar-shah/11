@@ -16,23 +16,23 @@ function App() {
   const videoData = [
     {
       id: 1,
-      videoUrl: "/src/assets/Images/Balancing work, editing, posting, and community building is hard… let us make it easy ;) The @ur.mp4",
-      thumbnail: "/src/assets/Images/2.png"
+      videoUrl: "/assets/Images/Balancing work, editing, posting, and community building is hard… let us make it easy ;) The @ur.mp4",
+      thumbnail: "/assets/Images/2.png"
     },
     {
       id: 2,
-      videoUrl: "/src/assets/Images/Balancing work, editing, posting, and community building is hard… let us make it easy ;) The @ur.mp4",
-      thumbnail: "/src/assets/Images/2.png"
+      videoUrl: "/assets/Images/Balancing work, editing, posting, and community building is hard… let us make it easy ;) The @ur.mp4",
+      thumbnail: "/assets/Images/2.png"
     },
     {
       id: 3,
-      videoUrl: "/src/assets/Images/Balancing work, editing, posting, and community building is hard… let us make it easy ;) The @ur.mp4",
-      thumbnail: "/src/assets/Images/2.png"
+      videoUrl: "/assets/Images/Balancing work, editing, posting, and community building is hard… let us make it easy ;) The @ur.mp4",
+      thumbnail: "/assets/Images/2.png"
     },
     {
       id: 4,
-      videoUrl: "/src/assets/Images/Balancing work, editing, posting, and community building is hard… let us make it easy ;) The @ur.mp4",
-      thumbnail: "/src/assets/Images/2.png"
+      videoUrl: "/assets/Images/Balancing work, editing, posting, and community building is hard… let us make it easy ;) The @ur.mp4",
+      thumbnail: "/assets/Images/2.png"
     }
   ]
 
@@ -153,7 +153,7 @@ function App() {
         <header className="navbar">
           <div className="nav-left">
             <div className="logo-container">
-              <img src="/src/assets/Images/white_logoo.png" alt="Urban Desiii Logo" className="logo-image" />
+              <img src="/assets/Images/white_logoo.png" alt="Urban Desiii Logo" className="logo-image" />
               <span className="logo-text">Urban Desiii</span>
             </div>
           </div>
@@ -245,7 +245,7 @@ function App() {
                 <div className="hero-card animate-card-hover hero-card-delayed" data-animate-child style={{ animationDelay: '1.5s' }}>
                   <div className="hero-card-image">
                     <img 
-                      src="/src/assets/Images/@urbandesiii.png" 
+                      src="/assets/Images/@urbandesiii.png" 
                       alt="Urban Desiii Profile" 
                       className="hero-card-profile-image"
                     />
@@ -312,7 +312,7 @@ function App() {
           <div className="footer-top">
             <div className="footer-brand" data-animate="fade-up" data-animate-child>
               <div className="logo-container-small">
-                <img src="/src/assets/Images/white_logoo.png" alt="Urban Desiii Logo" className="logo-image small" />
+                <img src="/assets/Images/white_logoo.png" alt="Urban Desiii Logo" className="logo-image small" />
                 <span className="logo-text">Urban Desiii</span>
               </div>
             </div>
