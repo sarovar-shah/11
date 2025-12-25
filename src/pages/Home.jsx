@@ -58,7 +58,7 @@ const HomePage = () => (
         <div className="hero-card animate-card-hover hero-card-delayed" data-animate-child style={{ animationDelay: '1.5s' }}>
           <div className="hero-card-image">
             <img 
-              src="/src/assets/Images/@urbandesiii.png" 
+              src="/assets/Images/@urbandesiii.png" 
               alt="Urban Desiii Profile" 
               className="hero-card-profile-image"
             />
