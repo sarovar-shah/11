@@ -1,16 +1,35 @@
-# React + Vite
+# Urban Desiii – Official Website (Frontend)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📖 About the Project
+This is the official **frontend website** developed for **Urban Desiii**, built using **React**.  
+The website represents the brand online with a modern, responsive, and visually appealing user interface.
 
-Currently, two official plugins are available:
+The project focuses on **performance, smooth user experience, and clean design**, suitable for production and future scalability.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## ✨ Key Features
+- Modern UI built with React
+- Fully responsive (mobile, tablet, desktop)
+- Component-based architecture
+- Smooth navigation and interactions
+- Fast loading and optimized performance
+- Brand-focused design and layout
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🛠️ Technologies Used
+- **React.js** – Frontend framework
+- **JavaScript (ES6+)**
+- **HTML5**
+- **CSS3**
+- **Node.js & npm** (for development and dependency management)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+*(This is a frontend-only project. No backend or database is included.)*
+
+---
+Developed By
+
+Nitin Mahar
+Krishna Jha
+Software Developer
