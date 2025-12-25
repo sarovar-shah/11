@@ -148,10 +148,18 @@ function App() {
       <div className="page">
         <header className="navbar">
           <div className="nav-left">
-            <div className="logo-container">
+            <div 
+              className="logo-container"
+              onClick={() => {
+                setCurrentPage('home')
+                window.scrollTo({ top: 0, behavior: 'smooth' })
+              }}
+              style={{ cursor: 'pointer' }}
+            >
               <img src="/assets/Images/white_logoo.png" alt="Urban Desiii Logo" className="logo-image" />
               <span className="logo-text">Urban Desiii</span>
             </div>
+
           </div>
           <button 
             className="mobile-menu-toggle"
