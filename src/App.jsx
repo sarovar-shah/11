@@ -417,7 +417,6 @@
 
 import { useEffect, useState, useCallback, useRef } from 'react'
 import ContactPage from './pages/Contact'
-import SubscribePage from './pages/Subscribe'
 import AboutPage from './pages/About'
 import ServicePage from './pages/Service'
 import InstagramLive from './components/InstagramLive'
@@ -450,22 +449,10 @@ function App() {
 
   const videoRefs = useRef([])
 
-  // Simple video data with placeholder thumbnails
+  // Simple video data with placeholder thumbnails - keeping only 1 reel
   const videoData = [
     {
       id: 1,
-      videoUrl: "/assets/Images/hero-video.mp4"
-    },
-    {
-      id: 2,
-      videoUrl: "/assets/Images/hero-video.mp4"
-    },
-    {
-      id: 3,
-      videoUrl: "/assets/Images/hero-video.mp4"
-    },
-    {
-      id: 4,
       videoUrl: "/assets/Images/hero-video.mp4"
     }
   ]
@@ -619,12 +606,10 @@ function App() {
             <button className="nav-link" onClick={() => { setCurrentPage('about'); setMobileMenuOpen(false); }}>About</button>
             <button className="nav-link" onClick={() => { setCurrentPage('service'); setMobileMenuOpen(false); }}>Services</button>
             <button className="nav-link" onClick={() => { setCurrentPage('contact'); setMobileMenuOpen(false); }}>Contact</button>
-            <button className="nav-link" onClick={() => { setCurrentPage('subscribe'); setMobileMenuOpen(false); }}>Subscribe</button>
           </div>
         </header>
 
         {currentPage === 'contact' ? <ContactPage /> : 
-         currentPage === 'subscribe' ? <SubscribePage /> : 
          currentPage === 'about' ? <AboutPage /> :
          currentPage === 'service' ? <ServicePage /> : (
           <main>
@@ -685,6 +670,7 @@ function App() {
               </div>
               
               <div className="video-grid" data-animate-child>
+                {/* Keep 1 reel video */}
                 {videoData.map((video, index) => (
                   <div 
                     key={video.id} 
@@ -702,12 +688,88 @@ function App() {
                         muted
                         loop
                         playsInline
-                        // poster={video.thumbnail}
                       />
-
                     </div>
                   </div>
                 ))}
+                
+                {/* Subscription section replacing 3 removed reels - Image on left, Form on right */}
+                <div className="subscription-replacement" data-animate="fade-up" data-animate-child>
+                  <div className="subscribe-details" data-animate="fade-up">
+                    <div className="subscription-image-container">
+                      <div className="subscription-image-overlay">
+                        <h2 className="subscription-title">Monthly Subscription</h2>
+                      </div>
+                    </div>
+                    <div className="subscription-content">
+                      <div className="subscription-price">$10.00 /month</div>
+                      <ul className="subscription-features">
+                        <li className="feature-item">
+                          <span className="check-icon">✓</span>
+                          <span>WEEKLY trend reports - includes trending audios and content</span>
+                        </li>
+                        <li className="feature-item">
+                          <span className="check-icon">✓</span>
+                          <span>Tailored content ideas for your target audience & niche</span>
+                        </li>
+                        <li className="feature-item">
+                          <span className="check-icon">✓</span>
+                          <span>Direct 1-1 access to our managers & social media experts</span>
+                        </li>
+                        <li className="feature-item">
+                          <span className="check-icon">✓</span>
+                          <span>Customized content & growth plans (we will tell you exactly what & when to post)</span>
+                        </li>
+                        <li className="feature-item">
+                          <span className="check-icon">✓</span>
+                          <span>First hand access to brand deals, UGC, and events that collaborate with Urban Desiii.</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  
+                  <div className="subscribe-form-container">
+                    <form className="subscribe-form" data-animate="fade-up">
+                      <div className="form-grid">
+                        <label className="form-field">
+                          <span>Name (required)</span>
+                          <div className="split-inputs">
+                            <input type="text" name="firstName" placeholder="First Name" required />
+                            <input type="text" name="lastName" placeholder="Last Name" required />
+                          </div>
+                        </label>
+
+                        <label className="form-field">
+                          <span>Email (required)</span>
+                          <input type="email" name="email" placeholder="Email" required />
+                        </label>
+
+                        <label className="form-field">
+                          <span>Content Niche (required)</span>
+                          <input 
+                            type="text" 
+                            name="niche" 
+                            placeholder="Content Niche (ex: lifestyle, beauty, etc.)" 
+                            required 
+                          />
+                        </label>
+
+                        <label className="form-field">
+                          <span>Social Media Handles (required)</span>
+                          <textarea 
+                            name="handles" 
+                            rows="6" 
+                            placeholder="Enter your social media handles" 
+                            required 
+                            className="textarea-resizable"
+                          />
+                        </label>
+                      </div>
+
+                      <button type="submit" className="btn btn-primary full-width">Submit</button>
+                    </form>
+                  </div>
+                </div>
               </div>
             </section>
           </main>
@@ -797,9 +859,6 @@ function App() {
                 </div>
               ))}
             </div>
-          </div>
-          <div className="footer-bottom">
-            <span> 2023 Urban Desiii. All rights reserved.</span>
           </div>
         </div>
       </footer>

@@ -2,15 +2,92 @@ import { useEffect } from 'react';
 
 const InstagramLive = () => {
   useEffect(() => {
+    // Suppress tracking prevention warnings
+    const originalWarn = console.warn;
+    const originalError = console.error;
+    
+    console.warn = (...args) => {
+      const message = args[0]?.toString() || '';
+      if (message.includes('Tracking Prevention') || message.includes('static.cdninstagram.com')) {
+        return; // Suppress tracking prevention warnings
+      }
+      originalWarn.apply(console, args);
+    };
+    
+    console.error = (...args) => {
+      const message = args[0]?.toString() || '';
+      if (message.includes('Tracking Prevention') || message.includes('static.cdninstagram.com')) {
+        return; // Suppress tracking prevention errors
+      }
+      originalError.apply(console, args);
+    };
+
+    // Function to process Instagram embed
+    const processInstagram = () => {
+      if (window.instgrm && window.instgrm.Embeds) {
+        // Process all Instagram embeds
+        window.instgrm.Embeds.process();
+      }
+    };
+
     // Load Instagram embed script
     const script = document.createElement('script');
     script.src = '//www.instagram.com/embed.js';
     script.async = true;
-    document.body.appendChild(script);
+    script.onerror = () => {
+      // Silently handle script loading errors
+    };
+    
+    // Check if script already exists
+    const existingScript = document.querySelector('script[src*="instagram.com/embed.js"]');
+    if (existingScript) {
+      // Script already loaded, process immediately
+      if (window.instgrm && window.instgrm.Embeds) {
+        // Small delay to ensure DOM is ready
+        setTimeout(() => {
+          processInstagram();
+        }, 100);
+      } else {
+        // Wait for instgrm to be available
+        const checkInstgrm = setInterval(() => {
+          if (window.instgrm && window.instgrm.Embeds) {
+            processInstagram();
+            clearInterval(checkInstgrm);
+          }
+        }, 100);
+        // Stop checking after 3 seconds
+        setTimeout(() => clearInterval(checkInstgrm), 3000);
+      }
+    } else {
+      document.body.appendChild(script);
+      
+      // When script loads, process Instagram
+      script.onload = () => {
+        if (window.instgrm && window.instgrm.Embeds) {
+          processInstagram();
+        }
+      };
+    }
+    
+    // Also try to process after a short delay (in case script was already loading)
+    setTimeout(() => {
+      processInstagram();
+    }, 500);
 
     return () => {
-      // Cleanup
-      document.body.removeChild(script);
+      // Restore original console methods
+      console.warn = originalWarn;
+      console.error = originalError;
+      
+      // Cleanup script if it was added by this component
+      const scriptToRemove = document.querySelector('script[src*="instagram.com/embed.js"]');
+      if (scriptToRemove && scriptToRemove === script) {
+        try {
+          document.body.removeChild(script);
+        } catch (e) {
+          // Script may have been removed already
+        }
+      }
     };
   }, []);
 

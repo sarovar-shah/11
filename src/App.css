@@ -1998,13 +1998,19 @@ main {
 }
 
 .video-card {
-  background: linear-gradient(145deg, #0d0d0d 0%, #1a1a1a 100%);
-  border-radius: 20px;
+  background: transparent;
+  border-radius: 20px 20px 30px 30px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: none;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   position: relative;
+  z-index: 1;
+  max-width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 0;
 }
 
 .video-card::before {
@@ -2288,15 +2294,57 @@ main {
 
 .video-gallery-header {
   text-align: center;
-  margin-bottom: 4rem;
+  margin-bottom: 3rem;
+  margin-top: -2rem;
 }
 
 .video-gallery-header h2 {
   font-size: clamp(2.5rem, 5vw, 3.5rem);
   font-weight: 800;
-  color: #ffffff;
+  background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 50%, #ffffff 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
   margin: 0 0 1rem;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  text-shadow: none;
+  letter-spacing: -0.02em;
+  position: relative;
+  display: inline-block;
+  animation: gradient-shift 3s ease-in-out infinite;
+}
+
+.video-gallery-header h2::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, #ffffff, transparent);
+  border-radius: 2px;
+  animation: underline-glow 2s ease-in-out infinite;
+}
+
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes underline-glow {
+  0%, 100% {
+    opacity: 0.6;
+    width: 80px;
+  }
+  50% {
+    opacity: 1;
+    width: 120px;
+  }
 }
 
 .video-gallery-header p {
@@ -2311,30 +2359,181 @@ main {
   grid-template-columns: repeat(4, 1fr);
   gap: 2rem;
   margin-bottom: 3rem;
+  margin-top: 50px;
+  overflow: visible;
+  position: relative;
+  align-items: center;
 }
 
-/* Staggered positioning - up, down, up, down */
-.video-card:nth-child(odd) {
-  transform: translateY(0px); /* Up position (normal) */
-}
-
+/* Remove staggered positioning for even alignment */
+.video-card:nth-child(odd),
 .video-card:nth-child(even) {
-  transform: translateY(40px); /* Down position */
+  transform: translateY(0px);
 }
 
 .video-card:hover {
   transform: translateY(-12px) scale(1.02) !important; /* Override stagger on hover */
-  border-color: #888888;
-  box-shadow: 
-    0 25px 50px rgba(0, 0, 0, 0.3),
-    0 0 0 1px #888888;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+}
+
+/* Subscription replacement section - spans 3 columns, image left, form right */
+.subscription-replacement {
+  grid-column: span 3;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: center;
+  justify-items: center;
+  position: relative;
+  z-index: 2;
+  margin-top: 0;
+}
+
+.subscription-replacement .subscribe-details {
+  background: #f5f5f5;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 400px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-left: 1.5rem;
+}
+
+.subscription-replacement .subscription-image-container {
+  height: 80px;
+}
+
+.subscription-replacement .subscription-title {
+  font-size: 1.75rem;
+}
+
+.subscription-replacement .subscription-content {
+  padding: 1.25rem;
+}
+
+.subscription-replacement .subscription-price {
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+}
+
+.subscription-replacement .subscription-features {
+  gap: 0.6rem;
+}
+
+.subscription-replacement .feature-item {
+  font-size: 0.8rem;
+}
+
+.subscription-replacement .subscribe-form-container {
+  width: 100%;
+  max-width: 400px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.subscription-replacement .subscribe-form {
+  padding: 1.5rem;
+  border-radius: 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.subscription-replacement .subscribe-form .form-grid {
+  gap: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+.subscription-replacement .subscribe-form .form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.subscription-replacement .subscribe-form .form-field span {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 0.2px;
+}
+
+.subscription-replacement .subscribe-form .split-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.subscription-replacement .subscribe-form input,
+.subscription-replacement .subscribe-form textarea {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  font-size: 0.9rem;
+  border-radius: 12px;
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  font-family: inherit;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.subscription-replacement .subscribe-form input::placeholder,
+.subscription-replacement .subscribe-form textarea::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.subscription-replacement .subscribe-form input:focus,
+.subscription-replacement .subscribe-form textarea:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.subscription-replacement .subscribe-form .textarea-resizable {
+  resize: vertical;
+  min-height: 120px;
+  font-family: inherit;
+}
+
+.subscription-replacement .subscribe-form .btn-primary {
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #000000;
+  border: 2px solid #ffffff;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+}
+
+.subscription-replacement .subscribe-form .btn-primary:hover {
+  background: #000000;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+}
+
+.subscription-replacement .subscribe-form .btn-primary:active {
+  transform: translateY(0);
 }
 
 .video-container {
   position: relative;
   width: 100%;
-  height: 400px;
+  height: 520px;
   overflow: hidden;
+  border-radius: 20px 20px 30px 30px;
 }
 
 .video-thumbnail-img {
@@ -2355,12 +2554,10 @@ main {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0;
+  opacity: 1;
   transition: opacity 0.3s ease;
   z-index: 2;
-}
-.video-element {
-  opacity: 1;
+  border-radius: 20px 20px 30px 30px;
 }
 
 .video-thumbnail-img {
@@ -2382,11 +2579,49 @@ main {
   
   /* Adjust stagger for 3-column layout */
   .video-card:nth-child(3n+2) {
-    transform: translateY(30px);
+    transform: translateY(15px);
   }
   .video-card:nth-child(3n+1), 
   .video-card:nth-child(3n+3) {
     transform: translateY(0px);
+  }
+  
+  .subscription-replacement {
+    grid-column: span 2;
+  }
+  
+  .subscription-replacement .subscribe-form {
+    padding: 1.75rem;
+  }
+  
+  .subscription-replacement .subscribe-form .form-grid {
+    gap: 1.35rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .subscription-replacement .subscribe-form {
+    padding: 1.5rem;
+  }
+  
+  .subscription-replacement .subscribe-form .form-grid {
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .subscription-replacement .subscribe-form .form-field span {
+    font-size: 0.9rem;
+  }
+  
+  .subscription-replacement .subscribe-form input,
+  .subscription-replacement .subscribe-form textarea {
+    padding: 0.9rem 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .subscription-replacement .subscribe-form .btn-primary {
+    padding: 1rem 1.75rem;
+    font-size: 0.95rem;
   }
 }
 
@@ -2397,7 +2632,7 @@ main {
   }
 
   .video-container {
-    height: 350px;
+    height: 470px;
   }
 
   .video-gallery {
@@ -2409,10 +2644,26 @@ main {
     transform: translateY(0px);
   }
   .video-card:nth-child(even) {
-    transform: translateY(30px);
+    transform: translateY(15px);
   }
   .video-card:nth-child(3n+2) {
-    transform: translateY(30px);
+    transform: translateY(15px);
+  }
+  
+  .subscription-replacement {
+    grid-column: span 2;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    justify-items: center;
+  }
+  
+  .subscription-replacement .subscribe-details {
+    order: -1;
+    max-width: 100%;
+  }
+  
+  .subscription-replacement .subscribe-form-container {
+    max-width: 100%;
   }
 }
 
@@ -2423,7 +2674,7 @@ main {
   }
 
   .video-container {
-    height: 300px;
+    height: 440px;
   }
 
   .video-gallery-header {
@@ -2435,6 +2686,178 @@ main {
   .video-card:nth-child(even),
   .video-card:nth-child(3n+2) {
     transform: translateY(0px);
+  }
+  
+  .subscription-replacement {
+    grid-column: span 1;
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+  
+  .subscription-replacement .subscribe-details {
+    max-width: 100%;
+  }
+  
+  .subscription-replacement .subscribe-form-container {
+    max-width: 100%;
+  }
+  
+  .subscription-replacement .subscription-image-container {
+    height: 70px;
+  }
+  
+  .subscription-replacement .subscription-title {
+    font-size: 1.5rem;
+  }
+  
+  .subscription-replacement .subscription-content {
+    padding: 1rem;
+  }
+  
+  .subscription-replacement .subscription-price {
+    font-size: 1.1rem;
+    margin-bottom: 0.6rem;
+  }
+  
+  .subscription-replacement .subscription-features {
+    gap: 0.5rem;
+  }
+  
+  .subscription-replacement .feature-item {
+    font-size: 0.75rem;
+  }
+  
+  .subscription-replacement .subscribe-form {
+    padding: 1.5rem;
+    border-radius: 16px;
+  }
+  
+  .subscription-replacement .subscribe-form .form-grid {
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .subscription-replacement .subscribe-form .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  
+  .subscription-replacement .subscribe-form .form-field span {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: 0.2px;
+  }
+  
+  .subscription-replacement .subscribe-form .split-inputs {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
+  
+  .subscription-replacement .subscribe-form input,
+  .subscription-replacement .subscribe-form textarea {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    font-size: 0.9rem;
+    border-radius: 12px;
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    font-family: inherit;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  
+  .subscription-replacement .subscribe-form input::placeholder,
+  .subscription-replacement .subscribe-form textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.9rem;
+  }
+  
+  .subscription-replacement .subscribe-form input:focus,
+  .subscription-replacement .subscribe-form textarea:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+  }
+  
+  .subscription-replacement .subscribe-form .textarea-resizable {
+    resize: vertical;
+    min-height: 110px;
+    font-family: inherit;
+  }
+  
+  .subscription-replacement .subscribe-form .btn-primary {
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 1rem 1.5rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #000000;
+    border: 2px solid #ffffff;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .subscription-replacement .subscribe-form .btn-primary:hover,
+  .subscription-replacement .subscribe-form .btn-primary:active {
+    background: #000000;
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+  }
+}
+
+@media (max-width: 380px) {
+  .subscription-replacement .subscribe-form {
+    padding: 1.25rem;
+  }
+  
+  .subscription-replacement .subscribe-form .form-grid {
+    gap: 1.1rem;
+    margin-bottom: 1.25rem;
+  }
+  
+  .subscription-replacement .subscribe-form .form-field span {
+    font-size: 0.85rem;
+  }
+  
+  .subscription-replacement .subscribe-form input,
+  .subscription-replacement .subscribe-form textarea {
+    padding: 0.8rem 0.95rem;
+    font-size: 0.875rem;
+  }
+  
+  .subscription-replacement .subscribe-form .btn-primary {
+    padding: 0.95rem 1.25rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .subscription-replacement .subscribe-form {
+    padding: 1rem;
+  }
+  
+  .subscription-replacement .subscribe-form .form-grid {
+    gap: 1rem;
+  }
+  
+  .subscription-replacement .subscribe-form input,
+  .subscription-replacement .subscribe-form textarea {
+    padding: 0.75rem 0.9rem;
+    font-size: 0.85rem;
   }
 }
 
@@ -4178,7 +4601,7 @@ main {
   }
   
   .video-container {
-    height: 300px;
+    height: 400px;
   }
 }
 
@@ -4188,7 +4611,7 @@ main {
   }
   
   .video-container {
-    height: 250px;
+    height: 380px;
   }
 }
 
