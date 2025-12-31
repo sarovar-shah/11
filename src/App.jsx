@@ -448,6 +448,8 @@ function App() {
   // }, [slides.length]);
 
   const videoRefs = useRef([])
+  const [videoMuted, setVideoMuted] = useState([true]) // Start muted for autoplay, will unmute after play
+  const hasUnmutedRef = useRef([false]) // Track if we've auto-unmuted
 
   // Simple video data with placeholder thumbnails - keeping only 1 reel
   const videoData = [
@@ -456,6 +458,172 @@ function App() {
       videoUrl: "/assets/Images/hero-video.mp4"
     }
   ]
+
+  // Ensure video plays continuously and auto-unmute after it starts
+  useEffect(() => {
+    const playVideo = (videoRef, index) => {
+      if (!videoRef) return
+
+      const attemptPlay = () => {
+        if (videoRef.paused) {
+          const playPromise = videoRef.play()
+          
+          if (playPromise !== undefined) {
+            playPromise
+              .then(() => {
+                // Video is playing, now unmute it
+                if (!hasUnmutedRef.current[index]) {
+                  setTimeout(() => {
+                    if (videoRef && !videoRef.paused) {
+                      videoRef.muted = false
+                      hasUnmutedRef.current[index] = true
+                      setVideoMuted(prev => {
+                        const newState = [...prev]
+                        newState[index] = false
+                        return newState
+                      })
+                    }
+                  }, 300)
+                }
+              })
+              .catch((error) => {
+                // Retry after delay
+                setTimeout(() => attemptPlay(), 500)
+              })
+          }
+        }
+      }
+
+      // Try to play immediately
+      attemptPlay()
+
+      // Also try when video can play
+      const handleCanPlay = () => {
+        attemptPlay()
+      }
+
+      const handleLoadedData = () => {
+        attemptPlay()
+      }
+
+      const handleLoadedMetadata = () => {
+        attemptPlay()
+      }
+
+      const handlePause = () => {
+        // If video gets paused, try to play it again
+        setTimeout(() => {
+          if (videoRef && videoRef.paused) {
+            attemptPlay()
+          }
+        }, 100)
+      }
+
+      const handleEnded = () => {
+        // If video ends, restart it
+        videoRef.currentTime = 0
+        attemptPlay()
+      }
+
+      // Add event listeners
+      videoRef.addEventListener('canplay', handleCanPlay)
+      videoRef.addEventListener('loadeddata', handleLoadedData)
+      videoRef.addEventListener('loadedmetadata', handleLoadedMetadata)
+      videoRef.addEventListener('pause', handlePause)
+      videoRef.addEventListener('ended', handleEnded)
+
+      // If already loaded, try to play
+      if (videoRef.readyState >= 2) {
+        attemptPlay()
+      }
+
+      return () => {
+        videoRef.removeEventListener('canplay', handleCanPlay)
+        videoRef.removeEventListener('loadeddata', handleLoadedData)
+        videoRef.removeEventListener('loadedmetadata', handleLoadedMetadata)
+        videoRef.removeEventListener('pause', handlePause)
+        videoRef.removeEventListener('ended', handleEnded)
+      }
+    }
+
+    // Wait for DOM to be ready, then play videos
+    const timer1 = setTimeout(() => {
+      videoRefs.current.forEach((videoRef, index) => {
+        if (videoRef) {
+          playVideo(videoRef, index)
+        }
+      })
+    }, 100)
+
+    // Also try after a longer delay to catch late-loading videos
+    const timer2 = setTimeout(() => {
+      videoRefs.current.forEach((videoRef, index) => {
+        if (videoRef && videoRef.paused) {
+          videoRef.play().catch(() => {})
+        }
+      })
+    }, 500)
+
+    return () => {
+      clearTimeout(timer1)
+      clearTimeout(timer2)
+    }
+  }, [])
+
+  // Intersection Observer to ensure video plays when in viewport
+  useEffect(() => {
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.1
+    }
+
+    const observerCallback = (entries) => {
+      entries.forEach((entry) => {
+        const videoIndex = parseInt(entry.target.dataset.videoIndex)
+        const videoRef = videoRefs.current[videoIndex]
+
+        if (videoRef) {
+          if (entry.isIntersecting) {
+            // Video is in viewport - ensure it's playing
+            if (videoRef.paused) {
+              videoRef.play().catch(() => {})
+            }
+          }
+        }
+      })
+    }
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions)
+
+    // Observe video containers
+    setTimeout(() => {
+      videoRefs.current.forEach((videoRef, index) => {
+        if (videoRef) {
+          const container = videoRef.closest('.video-container')
+          if (container) {
+            container.setAttribute('data-video-index', index)
+            observer.observe(container)
+          }
+        }
+      })
+    }, 200)
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [])
+
+  // Toggle mute/unmute for a specific video
+  const toggleMute = (index) => {
+    const newMutedState = [...videoMuted]
+    newMutedState[index] = !newMutedState[index]
+    setVideoMuted(newMutedState)
+    
+    if (videoRefs.current[index]) {
+      videoRefs.current[index].muted = newMutedState[index]
+    }
+  }
 
   // Enhanced mouse tracking for parallax effects
   const handleMouseMove = useCallback((e) => {
@@ -681,14 +849,43 @@ function App() {
                   >
                     <div className="video-container">
                       <video
-                        ref={el => videoRefs.current[index] = el}
+                        ref={el => {
+                          if (el) {
+                            videoRefs.current[index] = el
+                            // Try to play immediately when ref is set
+                            setTimeout(() => {
+                              if (el && el.paused) {
+                                el.play().catch(() => {})
+                              }
+                            }, 50)
+                          }
+                        }}
                         src={video.videoUrl}
                         className="video-element"
                         autoPlay
-                        muted
+                        muted={videoMuted[index]}
                         loop
                         playsInline
+                        preload="auto"
                       />
+                      <button
+                        className="mute-button"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          toggleMute(index)
+                        }}
+                        aria-label={videoMuted[index] ? "Unmute video" : "Mute video"}
+                      >
+                        {videoMuted[index] ? (
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M16.5 12C16.5 10.23 15.48 8.71 14 7.97V10.18L16.45 12.63C16.48 12.43 16.5 12.22 16.5 12ZM19 12C19 12.94 18.8 13.82 18.46 14.64L19.97 16.15C20.63 14.91 21 13.5 21 12C21 7.72 18.01 4.14 14 3.23V5.29C16.89 6.15 19 8.83 19 12ZM4.27 3L3 4.27L7.73 9H3V15H7L12 20V13.27L16.25 17.53C15.58 18.04 14.83 18.46 14 18.7V20.77C15.38 20.45 16.63 19.82 17.68 18.96L19.73 21L21 19.73L12 10.73L4.27 3ZM12 4L9.91 6.09L12 8.18V4Z" fill="white"/>
+                          </svg>
+                        ) : (
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 9V15H7L12 20V4L7 9H3ZM16.5 12C16.5 10.23 15.48 8.71 14 7.97V16.02C15.48 15.29 16.5 13.77 16.5 12ZM14 3.23V5.29C16.89 6.15 19 8.83 19 12C19 15.17 16.89 17.85 14 18.71V20.77C18.01 19.86 21 16.28 21 12C21 7.72 18.01 4.14 14 3.23Z" fill="white"/>
+                          </svg>
+                        )}
+                      </button>
                     </div>
                   </div>
                 ))}
