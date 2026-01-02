@@ -469,6 +469,25 @@ function App() {
       window.removeEventListener('popstate', handlePopState)
     }
   }, [])
+
+  // Track user interaction to enable unmuting
+  useEffect(() => {
+    const handleUserInteraction = () => {
+      hasUserInteractedRef.current = true
+    }
+
+    // Listen for any user interaction
+    document.addEventListener('click', handleUserInteraction, { once: true })
+    document.addEventListener('touchstart', handleUserInteraction, { once: true })
+    document.addEventListener('keydown', handleUserInteraction, { once: true })
+
+    return () => {
+      document.removeEventListener('click', handleUserInteraction)
+      document.removeEventListener('touchstart', handleUserInteraction)
+      document.removeEventListener('keydown', handleUserInteraction)
+    }
+  }, [])
+
   // Remove currentSlide since we're removing auto-scroll
   // const [currentSlide, setCurrentSlide] = useState(0)
   
@@ -492,6 +511,7 @@ function App() {
   const videoRefs = useRef([])
   const [videoMuted, setVideoMuted] = useState([true]) // Start muted, unmute on hover
   const isHoveringRef = useRef([false]) // Track hover state to prevent pause handler interference
+  const hasUserInteractedRef = useRef(false) // Track if user has interacted with the page
 
   // Simple video data with placeholder thumbnails - keeping only 1 reel
   const videoData = [
@@ -683,8 +703,8 @@ function App() {
           const container = videoRef.closest('.video-container')
           if (container) {
             const handleMouseEnter = () => {
-              // Only unmute if we're on the home page
-              if (currentPage === 'home' && videoRef) {
+              // Only unmute if we're on the home page and user has interacted
+              if (currentPage === 'home' && videoRef && hasUserInteractedRef.current) {
                 isHoveringRef.current[index] = true
                 // Ensure video is playing, then unmute
                 if (videoRef.paused) {
@@ -695,15 +715,23 @@ function App() {
                       newState[index] = false
                       return newState
                     })
-                  }).catch(() => {})
-                } else {
-                  // Video is playing, just unmute
-                  videoRef.muted = false
-                  setVideoMuted(prev => {
-                    const newState = [...prev]
-                    newState[index] = false
-                    return newState
+                  }).catch((err) => {
+                    // If unmute fails, keep it muted
+                    console.log('Unmute failed:', err)
                   })
+                } else {
+                  // Video is playing, try to unmute
+                  try {
+                    videoRef.muted = false
+                    setVideoMuted(prev => {
+                      const newState = [...prev]
+                      newState[index] = false
+                      return newState
+                    })
+                  } catch (err) {
+                    // If unmute fails, keep it muted
+                    console.log('Unmute failed:', err)
+                  }
                 }
               }
             }
@@ -722,7 +750,8 @@ function App() {
             }
 
             const handleClick = () => {
-              // On click, ensure video plays and unmutes
+              // On click, mark user interaction and ensure video plays and unmutes
+              hasUserInteractedRef.current = true
               if (currentPage === 'home' && videoRef) {
                 if (videoRef.paused) {
                   videoRef.play().then(() => {
@@ -732,14 +761,20 @@ function App() {
                       newState[index] = false
                       return newState
                     })
-                  }).catch(() => {})
-                } else {
-                  videoRef.muted = false
-                  setVideoMuted(prev => {
-                    const newState = [...prev]
-                    newState[index] = false
-                    return newState
+                  }).catch((err) => {
+                    console.log('Play/unmute failed:', err)
                   })
+                } else {
+                  try {
+                    videoRef.muted = false
+                    setVideoMuted(prev => {
+                      const newState = [...prev]
+                      newState[index] = false
+                      return newState
+                    })
+                  } catch (err) {
+                    console.log('Unmute failed:', err)
+                  }
                 }
               }
             }
@@ -764,7 +799,7 @@ function App() {
     }
   }, [currentPage])
 
-  // Intersection Observer to ensure video plays when in viewport
+  // Intersection Observer to ensure video plays when in viewport and mute when not visible (especially on mobile)
   useEffect(() => {
     const observerOptions = {
       root: null,
@@ -782,6 +817,17 @@ function App() {
             // Video is in viewport - ensure it's playing
             if (videoRef.paused) {
               videoRef.play().catch(() => {})
+            }
+          } else {
+            // Video is not visible - mute it (especially important on mobile)
+            const isMobile = window.innerWidth <= 768
+            if (isMobile && currentPage === 'home') {
+              videoRef.muted = true
+              setVideoMuted(prev => {
+                const newState = [...prev]
+                newState[videoIndex] = true
+                return newState
+              })
             }
           }
         }
@@ -806,7 +852,7 @@ function App() {
     return () => {
       observer.disconnect()
     }
-  }, [])
+  }, [currentPage])
 
   // Enhanced mouse tracking for parallax effects
   const handleMouseMove = useCallback((e) => {
