@@ -423,10 +423,52 @@ import InstagramLive from './components/InstagramLive'
 import './App.css'
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('home')
+  // Initialize currentPage from URL or default to 'home'
+  const getPageFromUrl = () => {
+    const path = window.location.pathname
+    if (path === '/about' || path === '/#about') return 'about'
+    if (path === '/service' || path === '/services' || path === '/#service') return 'service'
+    if (path === '/contact' || path === '/#contact') return 'contact'
+    return 'home'
+  }
+
+  const [currentPage, setCurrentPage] = useState(getPageFromUrl())
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [heroInView, setHeroInView] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  // Function to navigate and update URL
+  const navigateToPage = (page) => {
+    setCurrentPage(page)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    
+    // Update URL without page reload
+    const url = page === 'home' ? '/' : `/${page}`
+    window.history.pushState({ page }, '', url)
+  }
+
+  // Listen to browser back/forward buttons
+  useEffect(() => {
+    const handlePopState = (event) => {
+      const page = event.state?.page || getPageFromUrl()
+      setCurrentPage(page)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+
+    window.addEventListener('popstate', handlePopState)
+
+    // Initialize URL on mount
+    const initialPage = getPageFromUrl()
+    if (initialPage !== 'home') {
+      window.history.replaceState({ page: initialPage }, '', `/${initialPage}`)
+    } else {
+      window.history.replaceState({ page: 'home' }, '', '/')
+    }
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState)
+    }
+  }, [])
   // Remove currentSlide since we're removing auto-scroll
   // const [currentSlide, setCurrentSlide] = useState(0)
   
@@ -448,8 +490,8 @@ function App() {
   // }, [slides.length]);
 
   const videoRefs = useRef([])
-  const [videoMuted, setVideoMuted] = useState([true]) // Start muted for autoplay, will unmute after play
-  const hasUnmutedRef = useRef([false]) // Track if we've auto-unmuted
+  const [videoMuted, setVideoMuted] = useState([true]) // Start muted, unmute on hover
+  const isHoveringRef = useRef([false]) // Track hover state to prevent pause handler interference
 
   // Simple video data with placeholder thumbnails - keeping only 1 reel
   const videoData = [
@@ -459,37 +501,19 @@ function App() {
     }
   ]
 
-  // Ensure video plays continuously and auto-unmute after it starts
+  // Ensure video plays continuously (but stays muted)
   useEffect(() => {
     const playVideo = (videoRef, index) => {
       if (!videoRef) return
 
       const attemptPlay = () => {
-        if (videoRef.paused) {
+        if (videoRef && videoRef.paused) {
           const playPromise = videoRef.play()
-          
           if (playPromise !== undefined) {
-            playPromise
-              .then(() => {
-                // Video is playing, now unmute it
-                if (!hasUnmutedRef.current[index]) {
-                  setTimeout(() => {
-                    if (videoRef && !videoRef.paused) {
-                      videoRef.muted = false
-                      hasUnmutedRef.current[index] = true
-                      setVideoMuted(prev => {
-                        const newState = [...prev]
-                        newState[index] = false
-                        return newState
-                      })
-                    }
-                  }, 300)
-                }
-              })
-              .catch((error) => {
-                // Retry after delay
-                setTimeout(() => attemptPlay(), 500)
-              })
+            playPromise.catch(() => {
+              // Retry after delay if autoplay fails
+              setTimeout(() => attemptPlay(), 300)
+            })
           }
         }
       }
@@ -510,19 +534,41 @@ function App() {
         attemptPlay()
       }
 
+      let pauseTimeout = null
       const handlePause = () => {
-        // If video gets paused, try to play it again
-        setTimeout(() => {
-          if (videoRef && videoRef.paused) {
+        // Don't restart if user is hovering (to avoid conflicts)
+        if (isHoveringRef.current[index]) {
+          return
+        }
+        // Clear any existing timeout
+        if (pauseTimeout) {
+          clearTimeout(pauseTimeout)
+        }
+        // Add a delay to avoid conflicts with hover/unmute events
+        pauseTimeout = setTimeout(() => {
+          if (videoRef && videoRef.paused && !isHoveringRef.current[index]) {
+            // Only restart if video is still paused after delay and not hovering
             attemptPlay()
           }
-        }, 100)
+        }, 300)
       }
 
       const handleEnded = () => {
-        // If video ends, restart it
-        videoRef.currentTime = 0
-        attemptPlay()
+        // If video ends, restart it immediately
+        if (videoRef) {
+          videoRef.currentTime = 0
+          attemptPlay()
+        }
+      }
+
+      const handleTimeUpdate = () => {
+        // Ensure video keeps playing, but less aggressively
+        if (videoRef && videoRef.paused) {
+          // Only check periodically, not on every timeupdate
+          if (Math.random() < 0.1) { // Only 10% of the time
+            attemptPlay()
+          }
+        }
       }
 
       // Add event listeners
@@ -531,20 +577,52 @@ function App() {
       videoRef.addEventListener('loadedmetadata', handleLoadedMetadata)
       videoRef.addEventListener('pause', handlePause)
       videoRef.addEventListener('ended', handleEnded)
+      videoRef.addEventListener('timeupdate', handleTimeUpdate)
 
       // If already loaded, try to play
       if (videoRef.readyState >= 2) {
         attemptPlay()
       }
 
+      // Set up interval to check if video is playing
+      const playCheckInterval = setInterval(() => {
+        if (videoRef && videoRef.paused) {
+          attemptPlay()
+        }
+      }, 1000)
+
       return () => {
+        clearInterval(playCheckInterval)
         videoRef.removeEventListener('canplay', handleCanPlay)
         videoRef.removeEventListener('loadeddata', handleLoadedData)
         videoRef.removeEventListener('loadedmetadata', handleLoadedMetadata)
         videoRef.removeEventListener('pause', handlePause)
         videoRef.removeEventListener('ended', handleEnded)
+        videoRef.removeEventListener('timeupdate', handleTimeUpdate)
       }
     }
+
+    // Try to play videos immediately and multiple times
+    const playAllVideos = () => {
+      videoRefs.current.forEach((videoRef, index) => {
+        if (videoRef) {
+          if (!videoRef.paused) return // Already playing
+          
+          // Try to play
+          videoRef.play().catch(() => {
+            // If fails, retry
+            setTimeout(() => {
+              if (videoRef && videoRef.paused) {
+                videoRef.play().catch(() => {})
+              }
+            }, 200)
+          })
+        }
+      })
+    }
+
+    // Try immediately
+    playAllVideos()
 
     // Wait for DOM to be ready, then play videos
     const timer1 = setTimeout(() => {
@@ -553,22 +631,138 @@ function App() {
           playVideo(videoRef, index)
         }
       })
-    }, 100)
+      playAllVideos()
+    }, 50)
 
-    // Also try after a longer delay to catch late-loading videos
+    // Also try after multiple delays to catch late-loading videos
     const timer2 = setTimeout(() => {
-      videoRefs.current.forEach((videoRef, index) => {
-        if (videoRef && videoRef.paused) {
-          videoRef.play().catch(() => {})
-        }
-      })
+      playAllVideos()
+    }, 200)
+
+    const timer3 = setTimeout(() => {
+      playAllVideos()
     }, 500)
+
+    const timer4 = setTimeout(() => {
+      playAllVideos()
+    }, 1000)
 
     return () => {
       clearTimeout(timer1)
       clearTimeout(timer2)
+      clearTimeout(timer3)
+      clearTimeout(timer4)
     }
   }, [])
+
+  // Mute video when user navigates to a different page
+  useEffect(() => {
+    if (currentPage !== 'home') {
+      // User is on a different page, mute all videos
+      videoRefs.current.forEach((videoRef, index) => {
+        if (videoRef) {
+          videoRef.muted = true
+          setVideoMuted(prev => {
+            const newState = [...prev]
+            newState[index] = true
+            return newState
+          })
+        }
+      })
+    }
+  }, [currentPage])
+
+  // Add hover event listeners to unmute on hover
+  useEffect(() => {
+    const cleanupFunctions = []
+
+    // Wait a bit for DOM to be ready
+    const timer = setTimeout(() => {
+      videoRefs.current.forEach((videoRef, index) => {
+        if (videoRef) {
+          const container = videoRef.closest('.video-container')
+          if (container) {
+            const handleMouseEnter = () => {
+              // Only unmute if we're on the home page
+              if (currentPage === 'home' && videoRef) {
+                isHoveringRef.current[index] = true
+                // Ensure video is playing, then unmute
+                if (videoRef.paused) {
+                  videoRef.play().then(() => {
+                    videoRef.muted = false
+                    setVideoMuted(prev => {
+                      const newState = [...prev]
+                      newState[index] = false
+                      return newState
+                    })
+                  }).catch(() => {})
+                } else {
+                  // Video is playing, just unmute
+                  videoRef.muted = false
+                  setVideoMuted(prev => {
+                    const newState = [...prev]
+                    newState[index] = false
+                    return newState
+                  })
+                }
+              }
+            }
+
+            const handleMouseLeave = () => {
+              // Mute when mouse leaves
+              isHoveringRef.current[index] = false
+              if (videoRef) {
+                videoRef.muted = true
+                setVideoMuted(prev => {
+                  const newState = [...prev]
+                  newState[index] = true
+                  return newState
+                })
+              }
+            }
+
+            const handleClick = () => {
+              // On click, ensure video plays and unmutes
+              if (currentPage === 'home' && videoRef) {
+                if (videoRef.paused) {
+                  videoRef.play().then(() => {
+                    videoRef.muted = false
+                    setVideoMuted(prev => {
+                      const newState = [...prev]
+                      newState[index] = false
+                      return newState
+                    })
+                  }).catch(() => {})
+                } else {
+                  videoRef.muted = false
+                  setVideoMuted(prev => {
+                    const newState = [...prev]
+                    newState[index] = false
+                    return newState
+                  })
+                }
+              }
+            }
+
+            container.addEventListener('mouseenter', handleMouseEnter)
+            container.addEventListener('mouseleave', handleMouseLeave)
+            container.addEventListener('click', handleClick)
+
+            cleanupFunctions.push(() => {
+              container.removeEventListener('mouseenter', handleMouseEnter)
+              container.removeEventListener('mouseleave', handleMouseLeave)
+              container.removeEventListener('click', handleClick)
+            })
+          }
+        }
+      })
+    }, 100)
+
+    return () => {
+      clearTimeout(timer)
+      cleanupFunctions.forEach(cleanup => cleanup())
+    }
+  }, [currentPage])
 
   // Intersection Observer to ensure video plays when in viewport
   useEffect(() => {
@@ -613,17 +807,6 @@ function App() {
       observer.disconnect()
     }
   }, [])
-
-  // Toggle mute/unmute for a specific video
-  const toggleMute = (index) => {
-    const newMutedState = [...videoMuted]
-    newMutedState[index] = !newMutedState[index]
-    setVideoMuted(newMutedState)
-    
-    if (videoRefs.current[index]) {
-      videoRefs.current[index].muted = newMutedState[index]
-    }
-  }
 
   // Enhanced mouse tracking for parallax effects
   const handleMouseMove = useCallback((e) => {
@@ -733,7 +916,7 @@ function App() {
     } else {
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
-    setCurrentPage('home')
+    navigateToPage('home')
   }
 
   return (
@@ -744,8 +927,7 @@ function App() {
             <div 
               className="logo-container"
               onClick={() => {
-                setCurrentPage('home')
-                window.scrollTo({ top: 0, behavior: 'smooth' })
+                navigateToPage('home')
               }}
               style={{ cursor: 'pointer' }}
             >
@@ -770,10 +952,10 @@ function App() {
             ></div>
           )}
           <div className={`nav-right ${mobileMenuOpen ? 'mobile-open' : ''}`}>
-            <button className="nav-link" onClick={() => { setCurrentPage('home'); setMobileMenuOpen(false); }}>Home</button>
-            <button className="nav-link" onClick={() => { setCurrentPage('about'); setMobileMenuOpen(false); }}>About</button>
-            <button className="nav-link" onClick={() => { setCurrentPage('service'); setMobileMenuOpen(false); }}>Services</button>
-            <button className="nav-link" onClick={() => { setCurrentPage('contact'); setMobileMenuOpen(false); }}>Contact</button>
+            <button className="nav-link" onClick={() => { navigateToPage('home'); setMobileMenuOpen(false); }}>Home</button>
+            <button className="nav-link" onClick={() => { navigateToPage('about'); setMobileMenuOpen(false); }}>About</button>
+            <button className="nav-link" onClick={() => { navigateToPage('service'); setMobileMenuOpen(false); }}>Services</button>
+            <button className="nav-link" onClick={() => { navigateToPage('contact'); setMobileMenuOpen(false); }}>Contact</button>
           </div>
         </header>
 
@@ -796,7 +978,7 @@ function App() {
                   SOCIAL MEDIA + MARKETING AGENCY | BRAND + INFLUENCER MANAGEMENT
                 </p>
                 <div className="hero-actions" data-animate-child>
-                  <button className="btn btn-primary hero-cta animate-bounce-in" onClick={() => setCurrentPage('contact')}>
+                  <button className="btn btn-primary hero-cta animate-bounce-in" onClick={() => navigateToPage('contact')}>
                     Book a free consultant with our social media experts
                     <span className="btn-shine"></span>
                   </button>
@@ -853,11 +1035,26 @@ function App() {
                           if (el) {
                             videoRefs.current[index] = el
                             // Try to play immediately when ref is set
-                            setTimeout(() => {
+                            const tryPlay = () => {
                               if (el && el.paused) {
-                                el.play().catch(() => {})
+                                el.play().catch(() => {
+                                  // Retry if fails
+                                  setTimeout(tryPlay, 200)
+                                })
                               }
-                            }, 50)
+                            }
+                            // Try immediately
+                            tryPlay()
+                            // Also try after short delays to ensure it plays
+                            setTimeout(tryPlay, 100)
+                            setTimeout(tryPlay, 300)
+                            setTimeout(tryPlay, 600)
+                            setTimeout(tryPlay, 1000)
+                            
+                            // Also try when video is ready
+                            el.addEventListener('loadeddata', tryPlay)
+                            el.addEventListener('canplay', tryPlay)
+                            el.addEventListener('loadedmetadata', tryPlay)
                           }
                         }}
                         src={video.videoUrl}
@@ -868,24 +1065,6 @@ function App() {
                         playsInline
                         preload="auto"
                       />
-                      <button
-                        className="mute-button"
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          toggleMute(index)
-                        }}
-                        aria-label={videoMuted[index] ? "Unmute video" : "Mute video"}
-                      >
-                        {videoMuted[index] ? (
-                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M16.5 12C16.5 10.23 15.48 8.71 14 7.97V10.18L16.45 12.63C16.48 12.43 16.5 12.22 16.5 12ZM19 12C19 12.94 18.8 13.82 18.46 14.64L19.97 16.15C20.63 14.91 21 13.5 21 12C21 7.72 18.01 4.14 14 3.23V5.29C16.89 6.15 19 8.83 19 12ZM4.27 3L3 4.27L7.73 9H3V15H7L12 20V13.27L16.25 17.53C15.58 18.04 14.83 18.46 14 18.7V20.77C15.38 20.45 16.63 19.82 17.68 18.96L19.73 21L21 19.73L12 10.73L4.27 3ZM12 4L9.91 6.09L12 8.18V4Z" fill="white"/>
-                          </svg>
-                        ) : (
-                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M3 9V15H7L12 20V4L7 9H3ZM16.5 12C16.5 10.23 15.48 8.71 14 7.97V16.02C15.48 15.29 16.5 13.77 16.5 12ZM14 3.23V5.29C16.89 6.15 19 8.83 19 12C19 15.17 16.89 17.85 14 18.71V20.77C18.01 19.86 21 16.28 21 12C21 7.72 18.01 4.14 14 3.23Z" fill="white"/>
-                          </svg>
-                        )}
-                      </button>
                     </div>
                   </div>
                 ))}
