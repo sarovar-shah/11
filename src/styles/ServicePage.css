@@ -1,11 +1,11 @@
-/* Service Page Styles */
+/* Service Page Styles - Black Theme */
+
 .service-page {
-  min-height: 100vh;
-  background-color: #0a0a0a;
+  background-color: #000000;
   color: #ffffff;
-  padding: 3rem 1rem;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  min-height: 100vh;
+  padding: 2rem 1rem;
 }
 
 .service-container {
@@ -13,401 +13,210 @@
   margin: 0 auto;
 }
 
+/* ===== SERVICE HEADER ===== */
+.service-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 2rem 0;
+  border-bottom: 1px solid #333333;
+}
+
 .service-header h1 {
   font-size: 2.5rem;
   font-weight: 700;
-  margin-bottom: 3rem;
   color: #ffffff;
-  text-align: center;
   text-transform: uppercase;
   letter-spacing: 2px;
-  position: relative;
-  display: inline-block;
-  left: 50%;
-  transform: translateX(-50%);
 }
 
-.service-header h1::after {
-  content: '';
-  position: absolute;
-  bottom: -10px;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background-color: #888888;
-  border-radius: 3px;
-}
-
-/* Audit Card Styles */
-.audit-card {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 16px;
-  padding: 2rem;
-  margin: 1.5rem 0;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  width: 100%;
-  box-sizing: border-box;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-}
-
-.audit-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-}
-
-.audit-icon {
-  font-size: 3rem;
-  margin-bottom: 1.5rem;
-}
-
-.audit-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 1rem;
-  gap: 1rem;
-  width: 100%;
-}
-
-.audit-card-header h2 {
-  margin: 0;
-  font-size: 1.4rem;
-  color: #ffffff;
-  word-break: break-word;
-  hyphens: auto;
-  flex: 1;
-  padding: 0;
-  line-height: 1.3;
-  font-weight: 500;
-  text-transform: none;
-  letter-spacing: normal;
-}
-
-.audit-card .expand-icon {
-  font-size: 1.8rem;
-  font-weight: 300;
-  transition: all 0.3s ease;
-  color: #ffffff;
-  transform-origin: center;
-}
-
-.audit-card .expand-icon.expanded {
-  transform: rotate(90deg);
-  color: #ffffff;
-}
-
-.audit-card h2 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-  color: #ffffff;
-}
-
-.audit-card > p {
-  color: #a0a0a0;
-  margin-bottom: 2.5rem;
-  line-height: 1.6;
-  font-size: 1.1rem;
-  animation: fadeIn 0.3s ease-out;
-}
-
-.audit-features {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  margin-bottom: 2.5rem;
-}
-
-.feature-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-  background: rgba(255, 255, 255, 0.03);
-  padding: 1.2rem;
-  border-radius: 10px;
-  transition: background 0.3s ease;
-}
-
-.feature-item:hover {
-  background: rgba(255, 255, 255, 0.07);
-}
-
-.feature-icon {
-  background: linear-gradient(135deg, #ffffff, #FF6B6B);
-  color: white;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  margin-top: 4px;
-  font-size: 0.9rem;
-  font-weight: bold;
-}
-
-.feature-text h3 {
-  font-size: 1.1rem;
-  margin-bottom: 0.3rem;
-  color: #ffffff;
-}
-
-.feature-text p {
-  color: #a0a0a0;
-  font-size: 0.95rem;
-  line-height: 1.5;
-  margin: 0;
-}
-
-/* CTA Button */
-.cta-button {
-  background: linear-gradient(135deg, #6C63FF, #FF6B6B);
-  color: white;
-  border: none;
-  padding: 1rem 2rem;
-  font-size: 1rem;
-  font-weight: 600;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: block;
-  width: 100%;
-  max-width: 250px;
-  margin: 0 auto;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  position: relative;
-  overflow: hidden;
-}
-
-.cta-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: 0.5s;
-}
-
-.cta-button:hover::before {
-  left: 100%;
-}
-
-.cta-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(108, 99, 255, 0.4);
-}
-
-/* Consulting Section */
+/* ===== CONSULTING SECTION ===== */
 .consulting-section {
-  background: rgba(18, 18, 18, 0.8);
-  border-radius: 12px;
+  margin-bottom: 2rem;
+  background: #0f0f0f;
+  border-radius: 8px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid #222222;
   transition: all 0.3s ease;
-  margin: 2rem 0;
-  backdrop-filter: blur(10px);
-  box-sizing: border-box;
-  width: 100%;
 }
 
-/* Responsive Styles */
-@media (max-width: 768px) {
-  .service-page {
-    padding: 1.5rem 0.75rem;
-  }
-  
-  .audit-card {
-    padding: 1.25rem;
-    margin: 1rem 0;
-    border-radius: 12px;
-  }
-  
-  .audit-card-header h2 {
-    font-size: 1.1rem;
-    line-height: 1.4;
-  }
-  
-  .service-header h1 {
-    font-size: 1.8rem;
-    margin-bottom: 2rem;
-    padding: 0 1rem;
-  }
-  
-  .audit-card {
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  .audit-card-header h2 {
-    font-size: 1.2rem;
-    line-height: 1.4;
-  }
-  
-  .audit-card .expand-icon {
-    font-size: 1.5rem;
-    min-width: 24px;
-  }
-  
-  .consulting-header h2 {
-    font-size: 1.1rem;
-    padding-right: 1rem;
-  }
-  
-  .consulting-section {
-    margin: 1.5rem 0;
-  }
-  
-  .feature-item {
-    padding: 1rem;
-  }
-  
-  .feature-text h3 {
-    font-size: 1rem;
-  }
-  
-  .feature-text p {
-    font-size: 0.85rem;
-  }
+.consulting-section:hover {
+  border-color: #444444;
 }
 
 .consulting-header {
+  padding: 1.5rem 2rem;
+  background: #111111;
+  border-bottom: 1px solid #222222;
+  cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem 2rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  background: rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease;
 }
 
 .consulting-header:hover {
-  background: rgba(0, 0, 0, 0.3);
+  background: #1a1a1a;
 }
 
 .consulting-header h2 {
-  margin: 0;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: 600;
   color: #ffffff;
+  margin: 0;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
 .expand-icon {
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   font-weight: 300;
-  transition: all 0.3s ease;
   color: #ffffff;
-  transform-origin: center;
+  transition: transform 0.3s ease;
+  min-width: 24px;
+  text-align: center;
 }
 
 .expand-icon.expanded {
   transform: rotate(45deg);
-  color: #FF6B6B;
 }
 
+/* ===== CONSULTING CONTENT ===== */
 .consulting-content {
-  padding: 1.5rem 2rem;
-  color: #e0e0e0;
-  line-height: 1.6;
-  animation: fadeIn 0.3s ease-out;
+  padding: 2rem;
+  background: #0a0a0a;
 }
 
 .consulting-features {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .consulting-feature {
   display: flex;
-  gap: 1rem;
   align-items: flex-start;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #222222;
+}
+
+.consulting-feature:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
 .feature-bullet {
-  color: #6C63FF;
   font-size: 1.5rem;
-  line-height: 1;
-  margin-top: 0.2rem;
+  color: #ffffff;
+  margin-right: 1rem;
+  min-width: 20px;
+  font-weight: 300;
 }
 
 .consulting-feature h3 {
-  margin: 0 0 0.3rem 0;
-  color: #ffffff;
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: #cccccc;
+  margin: 0;
+  line-height: 1.6;
 }
 
-.consulting-feature p {
-  margin: 0;
-  color: #a0a0a0;
-  font-size: 0.9rem;
+.consulting-feature ul {
+  margin: 0.5rem 0 0 1.5rem;
+  padding: 0;
+}
+
+.consulting-feature li {
+  color: #aaaaaa;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
   line-height: 1.5;
 }
 
-/* Consulting + Audit + Growth Plan Section */
-.consulting-audit-section {
-  background: rgba(18, 18, 18, 0.8);
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  margin-top: 2rem;
-  backdrop-filter: blur(10px);
-}
-
-.consulting-audit-header {
-  padding: 1.5rem 2rem;
-  background: rgba(0, 0, 0, 0.2);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.consulting-audit-header h2 {
-  margin: 0;
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #ffffff;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.consulting-audit-content {
-  padding: 1.5rem 2rem;
-}
-
-.consulting-audit-feature {
-  display: flex;
-  gap: 1rem;
-  align-items: flex-start;
-  margin-bottom: 1.5rem;
-}
-
-.consulting-audit-feature:last-child {
+.consulting-feature li:last-child {
   margin-bottom: 0;
 }
 
-.consulting-audit-feature h3 {
-  margin: 0 0 0.3rem 0;
-  color: #ffffff;
+/* ===== TIER BEST FOR ===== */
+.tier-best-for {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: #111111;
+  border-radius: 4px;
+  border-left: 3px solid #ffffff;
   font-size: 1rem;
+  color: #cccccc;
+  line-height: 1.6;
+}
+
+.tier-best-for strong {
+  color: #ffffff;
   font-weight: 600;
 }
 
-.consulting-audit-feature p {
-  margin: 0;
-  color: #a0a0a0;
-  font-size: 0.9rem;
-  line-height: 1.5;
+/* ===== SPACING BETWEEN SECTIONS ===== */
+.service-header + .consulting-section {
+  margin-top: 2rem;
 }
 
-/* Animations */
-@keyframes fadeIn {
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 768px) {
+  .service-page {
+    padding: 1rem 0.5rem;
+  }
+  
+  .service-header h1 {
+    font-size: 2rem;
+    letter-spacing: 1px;
+  }
+  
+  .consulting-header {
+    padding: 1.2rem 1.5rem;
+  }
+  
+  .consulting-header h2 {
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+  }
+  
+  .consulting-content {
+    padding: 1.5rem;
+  }
+  
+  .consulting-feature h3 {
+    font-size: 1rem;
+  }
+  
+  .feature-bullet {
+    font-size: 1.3rem;
+    margin-right: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .service-header h1 {
+    font-size: 1.6rem;
+  }
+  
+  .consulting-header h2 {
+    font-size: 1rem;
+  }
+  
+  .consulting-feature {
+    flex-direction: column;
+  }
+  
+  .feature-bullet {
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* ===== SMOOTH TRANSITIONS ===== */
+.consulting-content {
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
   from {
     opacity: 0;
     transform: translateY(-10px);
@@ -418,29 +227,20 @@
   }
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .service-page {
-    padding: 3rem 1rem;
-  }
-  
-  .audit-card {
-    padding: 2rem 1.5rem;
-  }
-  
-  .service-header h1 {
-    font-size: 2rem;
-  }
-  
-  .audit-card h2 {
-    font-size: 1.7rem;
-  }
-  
-  .feature-item {
-    padding: 1rem;
-  }
-  
-  .cta-button {
-    max-width: 100%;
-  }
+/* ===== SCROLL BAR STYLING ===== */
+.service-page::-webkit-scrollbar {
+  width: 8px;
+}
+
+.service-page::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+.service-page::-webkit-scrollbar-thumb {
+  background: #333333;
+  border-radius: 4px;
+}
+
+.service-page::-webkit-scrollbar-thumb:hover {
+  background: #444444;
 }

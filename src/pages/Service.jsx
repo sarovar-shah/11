@@ -2,548 +2,460 @@ import React, { useState } from 'react';
 import '../styles/ServicePage.css';
 
 const ServicePage = () => {
-  const [expanded, setExpanded] = useState(false);
-  const [auditExpanded, setAuditExpanded] = useState(false);
-  const [auditCardExpanded, setAuditCardExpanded] = useState(false);
-  const [basicexpanded, setbasicExpanded] = useState(false);
-  const [standardexpanded, setstandardExpanded] = useState(false);
-  const [premiumexpanded, setpremiumExpanded] = useState(false);
-  const [personexpanded, setpersonExpanded] = useState(false);
-  const [businessexpanded, setbusinessExpanded] = useState(false);
-  const [eventexpanded, seteventExpanded] = useState(false);
-
+  // Tier states for Social Media Management
+  const [tier1Expanded, setTier1Expanded] = useState(false);
+  const [tier2Expanded, setTier2Expanded] = useState(false);
+  const [tier3Expanded, setTier3Expanded] = useState(false);
+  
+  // Influencer Marketing state
+  const [influencerExpanded, setInfluencerExpanded] = useState(false);
+  
+  // Ad Management state
+  const [adManagementExpanded, setAdManagementExpanded] = useState(false);
+  
+  // Event state
+  const [eventExpanded, setEventExpanded] = useState(false);
 
   return (
     <div className="service-page">
       <div className="service-container">
-        {/* Header Section */}
-        <div className="service-header">
-          <h1>CONSULTING / AUDITS</h1>
-        </div>
-
-        {/* Audit Card */}
-        <div className="consulting-section">
-          <div 
-            className="consulting-header"
-            onClick={() => setAuditCardExpanded(!auditCardExpanded)}
-          >
-            <h2>Social media / marketing audit</h2>
-            <span className={`expand-icon ${auditCardExpanded ? 'expanded' : ''}`}>+</span>
-          </div>
-          
-          {auditCardExpanded && (
-            <div className="consulting-content">
-              <div className="consulting-features">
-                <div className="consulting-feature">
-                  <div className="feature-bullet">•</div>
-                  <div>
-                    <h3>Thorough Review: Assess your social media/marketing</h3>
-                    
-                  </div>
-                </div>
-                
-                <div className="consulting-feature">
-                  <div className="feature-bullet">•</div>
-                  <div>
-                    <h3>Consultation: Includes initial and 30-min audit call</h3>
-                   
-                  </div>
-                </div>
-                
-                <div className="consulting-feature">
-                  <div className="feature-bullet">•</div>
-                  <div>
-                    <h3>Identify Issues: What’s working vs. not</h3>
-                    
-                  </div>
-                </div>
-                
-                <div className="consulting-feature">
-                  <div className="feature-bullet">•</div>
-                  <div>
-                    <h3>Growth Plan: 4-6 week strategy</h3>
-                  
-                  </div>
-                </div>
-
-                <div className="consulting-feature">
-                  <div className="feature-bullet">•</div>
-                  <div>
-                    <h3>Expert Advice: Tailored recommendations</h3>
-                  
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          )}
-        </div>
         
-        {/* Consulting Section */}
-        <div className="consulting-section">
-          <div 
-            className="consulting-header"
-            onClick={() => setExpanded(!expanded)}
-          >
-            <h2>CONSULTING</h2>
-            <span className={`expand-icon ${expanded ? 'expanded' : ''}`}>+</span>
-          </div>
-          
-          {expanded && (
-            <div className="consulting-content">
-              <div className="consulting-features">
-                <div className="consulting-feature">
-                  <div className="feature-bullet">•</div>
-                  <div>
-                    <h3>Regular Calls : 2-3 monthly calls to discuss strategy and progress</h3>
-                    
-                  </div>
-                </div>
-                
-                <div className="consulting-feature">
-                  <div className="feature-bullet">•</div>
-                  <div>
-                    <h3>Growth Plan : Targeted strategy with a 6-8 week implementation plan</h3>
-                   
-                  </div>
-                </div>
-                
-                <div className="consulting-feature">
-                  <div className="feature-bullet">•</div>
-                  <div>
-                    <h3>Audit Included : Comprehensive review of your social media presence</h3>
-                    
-                  </div>
-                </div>
-                
-                <div className="consulting-feature">
-                  <div className="feature-bullet">•</div>
-                  <div>
-                    <h3>Content Tips : Personalized suggestions for trending content with examples</h3>
-                    
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Consulting + Audit + Growth Plan Section */}
-         <div className="consulting-section">
-          <div 
-            className="consulting-header"
-            onClick={() => setAuditExpanded(!auditExpanded)}
-          >
-            <h2>CONSULTING + AUDIT + GROWTH PLAN</h2>
-            <span className={`expand-icon ${auditExpanded ? 'expanded' : ''}`}>+</span>
-          </div>
-          
-          {auditExpanded && (
-            <div className="consulting-content">
-              <div className="consulting-features">
-                <div className="consulting-feature">
-                  <div className="feature-bullet">•</div>
-                  <div>
-                    <h3>All-Inclusive : Audit + consulting package</h3>
-                    
-                  </div>
-                </div>
-                
-                <div className="consulting-feature">
-                  <div className="feature-bullet">•</div>
-                  <div>
-                    <h3>Enhanced Support : Weekly scheduled calls, and routine communication</h3>
-                
-                  </div>
-                </div>
-                
-                <div className="consulting-feature">
-                  <div className="feature-bullet">•</div>
-                  <div>
-                    <h3>In-Depth Plan : Detailed growth strategy, 8 - 12 week plan</h3>
-                    
-                  </div>
-                </div>
-                
-                <div className="consulting-feature">
-                  <div className="feature-bullet">•</div>
-                  <div>
-                    <h3>Ongoing Review : Regular audits and analytics/metric tracking</h3>
-                    
-                  </div>
-                </div>
-
-                <div className="consulting-feature">
-                  <div className="feature-bullet">•</div>
-                  <div>
-                    <h3>Tailored Advice : Customized recommendations, based on trending content, with examples and minor video editing provided
-                  </h3>
-                    
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          )}
-        </div>
-
-
-          <div className="service-header">
+        {/* SOCIAL MEDIA MANAGEMENT SECTION */}
+        <div className="service-header">
           <h1>SOCIAL MEDIA MANAGEMENT</h1>
         </div>
-          {/* BASIC Section */}
+
+        {/* Tier 1: Essentials Package */}
         <div className="consulting-section">
           <div 
             className="consulting-header"
-            onClick={() => setbasicExpanded(!basicexpanded)}
+            onClick={() => setTier1Expanded(!tier1Expanded)}
           >
-            <h2>BASIC</h2>
-            <span className={`expand-icon ${basicexpanded ? 'expanded' : ''}`}>+</span>
+            <h2>TIER 1: ESSENTIALS PACKAGE</h2>
+            <span className={`expand-icon ${tier1Expanded ? 'expanded' : ''}`}>+</span>
           </div>
           
-          {basicexpanded && (
+          {tier1Expanded && (
             <div className="consulting-content">
               <div className="consulting-features">
                 <div className="consulting-feature">
                   <div className="feature-bullet">•</div>
                   <div>
-                    <h3>Growth + Content Map (4-6 weeks)</h3>
-                    <p></p>
+                    <h3>8 posts/month (IG + TikTok combined)</h3>
                   </div>
                 </div>
                 
                 <div className="consulting-feature">
                   <div className="feature-bullet">•</div>
                   <div>
-                    <h3>1 hour of weekly engagement</h3>
-                   
+                    <h3>Creative direction & consulting</h3>
                   </div>
                 </div>
                 
                 <div className="consulting-feature">
                   <div className="feature-bullet">•</div>
                   <div>
-                    <h3>Curated SEO, hashtags, and baseline analytics</h3>
-                    
+                    <h3>Editing & graphic design</h3>
                   </div>
                 </div>
                 
                 <div className="consulting-feature">
                   <div className="feature-bullet">•</div>
                   <div>
-                    <h3>Trending growth plan, with x2 of posting responsibility + scheduling</h3>
-                    
+                    <h3>Caption writing & posting</h3>
                   </div>
+                </div>
+
+                <div className="consulting-feature">
+                  <div className="feature-bullet">•</div>
+                  <div>
+                    <h3>Basic community engagement (10–15 min/day)</h3>
+                  </div>
+                </div>
+
+                <div className="consulting-feature">
+                  <div className="feature-bullet">•</div>
+                  <div>
+                    <h3>Monthly analytics report</h3>
+                  </div>
+                </div>
+
+                <div className="consulting-feature">
+                  <div className="feature-bullet">•</div>
+                  <div>
+                    <h3>One-time paid ads audit</h3>
+                  </div>
+                </div>
+
+                <div className="consulting-feature">
+                  <div className="feature-bullet">•</div>
+                  <div>
+                    <h3>1 mini-influencer outreach/month (1–2 creators)</h3>
+                  </div>
+                </div>
+
+                <div className="tier-best-for">
+                  <strong>Best for:</strong> Brands seeking consistency, professional content, and foundational growth.
                 </div>
               </div>
             </div>
           )}
         </div>
-    
-        {/* STANDARD Section */}
+
+        {/* Tier 2: Growth Package */}
         <div className="consulting-section">
           <div 
             className="consulting-header"
-            onClick={() => setstandardExpanded(!standardexpanded)}
+            onClick={() => setTier2Expanded(!tier2Expanded)}
           >
-            <h2>STANDARD</h2>
-            <span className={`expand-icon ${standardexpanded ? 'expanded' : ''}`}>+</span>
+            <h2>TIER 2: GROWTH PACKAGE</h2>
+            <span className={`expand-icon ${tier2Expanded ? 'expanded' : ''}`}>+</span>
           </div>
           
-          {standardexpanded && (
+          {tier2Expanded && (
             <div className="consulting-content">
               <div className="consulting-features">
                 <div className="consulting-feature">
                   <div className="feature-bullet">•</div>
                   <div>
-                    <h3>Personalized branding + growth plan (8 weeks)</h3>
-                  </div>
-                </div>
-                
-                <div className="consulting-feature">
-                  <div className="feature-bullet">•</div>
-                  <div>
-                    <h3>4 hours of weekly engagement</h3>
-                    
-                  </div>
-                </div>
-                
-                <div className="consulting-feature">
-                  <div className="feature-bullet">•</div>
-                  <div>
-                    <h3>UGC + PR brand deals (Influencer outreach & management)</h3>
-                    
-                  </div>
-                </div>
-                
-                <div className="consulting-feature">
-                  <div className="feature-bullet">•</div>
-                  <div>
-                    <h3>Monthly analytics/metric tracking</h3>
-                    
+                    <h3>Everything in Tier 1, plus:</h3>
                   </div>
                 </div>
 
-                
-                 <div className="consulting-feature">
+                <div className="consulting-feature">
                   <div className="feature-bullet">•</div>
                   <div>
-                    <h3>x3 week full posting responsibility & scheduling</h3>
-                    
+                    <h3>14 posts/month</h3>
+                  </div>
+                </div>
+                
+                <div className="consulting-feature">
+                  <div className="feature-bullet">•</div>
+                  <div>
+                    <h3>Full community engagement (up to 1 hour/day)</h3>
+                  </div>
+                </div>
+                
+                <div className="consulting-feature">
+                  <div className="feature-bullet">•</div>
+                  <div>
+                    <h3>Creator coordination (3–5 creators/month)</h3>
+                  </div>
+                </div>
+                
+                <div className="consulting-feature">
+                  <div className="feature-bullet">•</div>
+                  <div>
+                    <h3>Monthly activation or event marketing support</h3>
                   </div>
                 </div>
 
+                <div className="consulting-feature">
+                  <div className="feature-bullet">•</div>
+                  <div>
+                    <h3>Paid ads management (full setup + optimization)</h3>
+                  </div>
+                </div>
+
+                <div className="consulting-feature">
+                  <div className="feature-bullet">•</div>
+                  <div>
+                    <h3>Advanced content calendar & recurring content series</h3>
+                  </div>
+                </div>
+
+                <div className="tier-best-for">
+                  <strong>Best for:</strong> Brands ready to scale visibility, traffic, and conversions.
+                </div>
               </div>
             </div>
           )}
         </div>
 
-        {/* PREMIUM Section */}
-         <div className="consulting-section">
+        {/* Tier 3: Full Ecosystem Package */}
+        <div className="consulting-section">
           <div 
             className="consulting-header"
-            onClick={() => setpremiumExpanded(!premiumexpanded)}
+            onClick={() => setTier3Expanded(!tier3Expanded)}
           >
-            <h2>PREMIUM</h2>
-            <span className={`expand-icon ${premiumexpanded ? 'expanded' : ''}`}>+</span>
+            <h2>TIER 3: FULL ECOSYSTEM PACKAGE</h2>
+            <span className={`expand-icon ${tier3Expanded ? 'expanded' : ''}`}>+</span>
           </div>
           
-          {premiumexpanded && (
+          {tier3Expanded && (
             <div className="consulting-content">
               <div className="consulting-features">
                 <div className="consulting-feature">
                   <div className="feature-bullet">•</div>
                   <div>
-                    <h3>Assigned individual manager</h3>
-                  </div>
-                </div>
-                
-                <div className="consulting-feature">
-                  <div className="feature-bullet">•</div>
-                  <div>
-                    <h3>Growth and targeted content plan (12 weeks)</h3>
-                    
-                  </div>
-                </div>
-                
-                <div className="consulting-feature">
-                  <div className="feature-bullet">•</div>
-                  <div>
-                    <h3>Any/all content creation (photo + video editing)</h3>
-                    
-                  </div>
-                </div>
-                
-                <div className="consulting-feature">
-                  <div className="feature-bullet">•</div>
-                  <div>
-                    <h3>Influencer + brand outreach (UGC, PR, brand deals, etc.)</h3>
-                    
-                  </div>
-                </div>
-
-                
-                 <div className="consulting-feature">
-                  <div className="feature-bullet">•</div>
-                  <div>
-                    <h3>Analytics, Metrics + Engagement data (weekly)</h3>
-                    
+                    <h3>Everything in Tier 2, plus:</h3>
                   </div>
                 </div>
 
                 <div className="consulting-feature">
                   <div className="feature-bullet">•</div>
                   <div>
-                    <h3>Unlimited posting + scheduling responsibility (ALL platforms)</h3>
-                    
+                    <h3>20 posts/month</h3>
+                  </div>
+                </div>
+                
+                <div className="consulting-feature">
+                  <div className="feature-bullet">•</div>
+                  <div>
+                    <h3>Priority editing & branded motion graphics</h3>
+                  </div>
+                </div>
+                
+                <div className="consulting-feature">
+                  <div className="feature-bullet">•</div>
+                  <div>
+                    <h3>Full-scale influencer marketing (6–10 creators/month)</h3>
+                  </div>
+                </div>
+                
+                <div className="consulting-feature">
+                  <div className="feature-bullet">•</div>
+                  <div>
+                    <h3>Full event coordination (monthly)</h3>
                   </div>
                 </div>
 
+                <div className="consulting-feature">
+                  <div className="feature-bullet">•</div>
+                  <div>
+                    <h3>Dedicated ads strategy + 2 campaigns/month</h3>
+                  </div>
+                </div>
+
+                <div className="consulting-feature">
+                  <div className="feature-bullet">•</div>
+                  <div>
+                    <h3>On-site brand direction (1 visit/month, if applicable)</h3>
+                  </div>
+                </div>
+
+                <div className="consulting-feature">
+                  <div className="feature-bullet">•</div>
+                  <div>
+                    <h3>Weekly strategy calls & VIP support</h3>
+                  </div>
+                </div>
+
+                <div className="tier-best-for">
+                  <strong>Best for:</strong> Brands looking to dominate their local market and build long-term brand equity.
+                </div>
               </div>
             </div>
           )}
         </div>
 
-
+        {/* INFLUENCER MARKETING SECTION */}
         <div className="service-header">
-          <h1>Marketing + branding</h1>
+          <h1>INFLUENCER MARKETING</h1>
         </div>
-          {/* marketing Section */}
+
         <div className="consulting-section">
           <div 
             className="consulting-header"
-            onClick={() => setpersonExpanded(!personexpanded)}
+            onClick={() => setInfluencerExpanded(!influencerExpanded)}
           >
-            <h2>PERSONAL BRANDING (INFLUENCERS/CREATERS)</h2>
-            <span className={`expand-icon ${personexpanded ? 'expanded' : ''}`}>+</span>
+            <h2>SERVICES</h2>
+            <span className={`expand-icon ${influencerExpanded ? 'expanded' : ''}`}>+</span>
           </div>
           
-          {personexpanded && (
+          {influencerExpanded && (
             <div className="consulting-content">
               <div className="consulting-features">
                 <div className="consulting-feature">
                   <div className="feature-bullet">•</div>
                   <div>
-                    <h3>Image Enhancement: Build a strong personal brand with brand deals, PR, and UGC</h3>
-                    
+                    <h3>Full influencer outreach & negotiation</h3>
                   </div>
                 </div>
                 
                 <div className="consulting-feature">
                   <div className="feature-bullet">•</div>
                   <div>
-                    <h3>Custom Strategy: Tailored branding plan</h3>
-                   
+                    <h3>Micro & mid-tier creators aligned with your brand values</h3>
                   </div>
                 </div>
                 
                 <div className="consulting-feature">
                   <div className="feature-bullet">•</div>
                   <div>
-                    <h3>Online Presence: Optimize social media profiles</h3>
-                    
+                    <h3>In-person or on-site content creation:</h3>
+                    <ul style={{ marginLeft: '1.5rem', marginTop: '0.5rem' }}>
+                      <li>Product experiences</li>
+                      <li>Reaction videos</li>
+                      <li>"Spend a day with us" style content</li>
+                    </ul>
                   </div>
                 </div>
                 
                 <div className="consulting-feature">
                   <div className="feature-bullet">•</div>
                   <div>
-                    <h3>Content Creation: Personalized content ideas</h3>
-                    
+                    <h3>Influencer briefing documents & content guidelines</h3>
                   </div>
                 </div>
 
                 <div className="consulting-feature">
                   <div className="feature-bullet">•</div>
                   <div>
-                    <h3>Reputation Management: Maintain a positive image</h3>
+                    <h3>Long-term creator relationship building</h3>
                   </div>
                 </div>
 
+                <div className="consulting-feature">
+                  <div className="feature-bullet">•</div>
+                  <div>
+                    <h3>Tracking & reporting influencer performance</h3>
+                  </div>
+                </div>
               </div>
             </div>
           )}
         </div>
-    
-        {/* business Section */}
+
+        {/* AD MANAGEMENT / AUDITING SECTION */}
+        <div className="service-header">
+          <h1>AD MANAGEMENT / AUDITING</h1>
+        </div>
+
         <div className="consulting-section">
           <div 
             className="consulting-header"
-            onClick={() => setbusinessExpanded(!businessexpanded)}
+            onClick={() => setAdManagementExpanded(!adManagementExpanded)}
           >
-            <h2>BUSINESS/BRANDING (SHOPS,Services,ETC.)</h2>
-            <span className={`expand-icon ${businessexpanded ? 'expanded' : ''}`}>+</span>
+            <h2>SERVICES</h2>
+            <span className={`expand-icon ${adManagementExpanded ? 'expanded' : ''}`}>+</span>
           </div>
           
-          {businessexpanded && (
+          {adManagementExpanded && (
             <div className="consulting-content">
               <div className="consulting-features">
                 <div className="consulting-feature">
                   <div className="feature-bullet">•</div>
                   <div>
-                    <h3>Brand Identity: Develop unique brand elements</h3>
+                    <h3>Full audit of existing Meta (and/or Google) ad accounts</h3>
                   </div>
                 </div>
                 
                 <div className="consulting-feature">
                   <div className="feature-bullet">•</div>
                   <div>
-                    <h3>Target Audience: Identify and reach ideal customers + work with influencers to leverage social media presence</h3>
-                    
+                    <h3>Review of:</h3>
+                    <ul style={{ marginLeft: '1.5rem', marginTop: '0.5rem' }}>
+                      <li>Targeting & audiences</li>
+                      <li>Creatives & messaging</li>
+                      <li>Landing pages</li>
+                      <li>Budget allocation</li>
+                      <li>Funnel structure</li>
+                    </ul>
                   </div>
                 </div>
                 
                 <div className="consulting-feature">
                   <div className="feature-bullet">•</div>
                   <div>
-                    <h3>Marketing Materials: Design logos, slogans, and more</h3>
-                    
+                    <h3>Clear report with recommended improvements</h3>
                   </div>
                 </div>
                 
                 <div className="consulting-feature">
                   <div className="feature-bullet">•</div>
                   <div>
-                    <h3>Online Strategy: Optimize website and social media</h3>
-                    
+                    <h3>Campaign rebuild & tracking setup</h3>
                   </div>
                 </div>
 
-                
-                 <div className="consulting-feature">
+                <div className="consulting-feature">
                   <div className="feature-bullet">•</div>
                   <div>
-                    <h3>Consistent Messaging: Ensure brand consistency</h3>
-                    
+                    <h3>Ongoing A/B testing</h3>
                   </div>
                 </div>
 
+                <div className="consulting-feature">
+                  <div className="feature-bullet">•</div>
+                  <div>
+                    <h3>Monthly performance reporting</h3>
+                  </div>
+                </div>
+
+                <div className="consulting-feature">
+                  <div className="feature-bullet">•</div>
+                  <div>
+                    <h3>Ad creatives repurposed from organic content</h3>
+                  </div>
+                </div>
+
+                <div className="consulting-feature">
+                  <div className="feature-bullet">•</div>
+                  <div>
+                    <h3>Data-driven optimization focused on conversions</h3>
+                  </div>
+                </div>
               </div>
             </div>
           )}
         </div>
 
-
-         <div className="service-header">
+        {/* EVENT / MEDIA COVERAGE SECTION */}
+        <div className="service-header">
           <h1>EVENT / MEDIA COVERAGE</h1>
         </div>
-          {/* eventstandard Section */}
+
         <div className="consulting-section">
           <div 
             className="consulting-header"
-            onClick={() => seteventExpanded(!eventexpanded)}
+            onClick={() => setEventExpanded(!eventExpanded)}
           >
-            <h2>STANDARD</h2>
-            <span className={`expand-icon ${eventexpanded ? 'expanded' : ''}`}>+</span>
+            <h2>SERVICES</h2>
+            <span className={`expand-icon ${eventExpanded ? 'expanded' : ''}`}>+</span>
           </div>
           
-          {eventexpanded && (
+          {eventExpanded && (
             <div className="consulting-content">
               <div className="consulting-features">
                 <div className="consulting-feature">
                   <div className="feature-bullet">•</div>
                   <div>
-                    <h3>Professional Coverage: Capture high-quality photos and videos of your events</h3>
-                    
+                    <h3>Event concepting & promotion</h3>
                   </div>
                 </div>
                 
                 <div className="consulting-feature">
                   <div className="feature-bullet">•</div>
                   <div>
-                    <h3>Content Creation: Produce engaging content tailored for social media</h3>
-                   
+                    <h3>Influencer attendance coordination</h3>
                   </div>
                 </div>
                 
                 <div className="consulting-feature">
                   <div className="feature-bullet">•</div>
                   <div>
-                    <h3>Editing Services: Edit footage into marketing materials, including Instagram Reels, Youtube Shorts, and TikToks</h3>
-                    
+                    <h3>Social promo rollout (IG + TikTok)</h3>
                   </div>
                 </div>
                 
                 <div className="consulting-feature">
                   <div className="feature-bullet">•</div>
                   <div>
-                    <h3>Social Media Optimization: Ensure content is optimized for maximum engagement</h3>
-                    
+                    <h3>On-site content direction or capture support</h3>
                   </div>
                 </div>
 
                 <div className="consulting-feature">
                   <div className="feature-bullet">•</div>
                   <div>
-                    <h3>Comprehensive Packages: Full-service coverage from event to online promotion - please book a consultation to discuss event details</h3>
+                    <h3>Post-event recap content</h3>
                   </div>
                 </div>
-
               </div>
             </div>
           )}
         </div>
-    
 
       </div>
     </div>
@@ -551,5 +463,3 @@ const ServicePage = () => {
 };
 
 export default ServicePage;
-
-                    
