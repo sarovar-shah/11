@@ -5494,3 +5494,90 @@ body {
   gap: 15px !important;
   align-items: center !important;
 }
+/* ========================================
+   REMOVE SCROLLBAR COMPLETELY (ALL DEVICES)
+   ======================================== */
+
+/* Hide scrollbar for all elements */
+* {
+  -ms-overflow-style: none !important;  /* IE and Edge */
+  scrollbar-width: none !important;  /* Firefox */
+}
+
+*::-webkit-scrollbar {
+  display: none !important;  /* Chrome, Safari, Opera */
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Hide scrollbar for html and body */
+html {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+  overflow-x: hidden !important;
+}
+
+html::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+}
+
+body {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+  overflow-x: hidden !important;
+}
+
+body::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+}
+
+/* Hide scrollbar for page wrapper */
+.page {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+  overflow-x: hidden !important;
+}
+
+.page::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+}
+
+/* Hide scrollbar for all scrollable containers */
+.nav-right,
+.footer,
+main,
+section {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+.nav-right::-webkit-scrollbar,
+.footer::-webkit-scrollbar,
+main::-webkit-scrollbar,
+section::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+}
+
+/* Mobile specific scrollbar removal */
+@media (max-width: 768px) {
+  * {
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+  }
+  
+  *::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    background: transparent !important;
+  }
+  
+  html, body {
+    overflow-x: hidden !important;
+  }
+}
