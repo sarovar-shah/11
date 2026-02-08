@@ -5668,3 +5668,62 @@ body {
     padding: 0 0.5rem !important;
   }
 }
+/* ========================================
+   FIX MOBILE NAVBAR BLACK STRIP - COMPLETE HIDE
+   ======================================== */
+
+@media (max-width: 768px) {
+  /* CLOSED STATE - Completely invisible */
+  .nav-right {
+    display: none !important;  /* Completely hidden by default */
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    max-width: 320px;
+    height: 100vh;
+    background: linear-gradient(180deg, rgba(18, 18, 18, 0.98) 0%, rgba(10, 10, 10, 1) 100%);
+    backdrop-filter: blur(20px);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 5rem 2rem 2rem;
+    gap: 0.5rem;
+    z-index: 99;
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.5);
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    overflow-y: auto;
+    transform: translateX(100%);  /* Moved off-screen */
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* OPEN STATE - Show with slide animation */
+  .nav-right.mobile-open {
+    display: flex !important;  /* Show when menu opens */
+    transform: translateX(0) !important;  /* Slide in */
+  }
+  
+  /* Remove any visible borders/backgrounds from navbar */
+  .navbar {
+    background: rgba(20, 20, 20, 0.95) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    overflow: visible !important;
+  }
+  
+  /* Ensure no overflow or visible parts */
+  .navbar::after,
+  .navbar::before {
+    display: none !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Extra small screens - same fix */
+  .nav-right {
+    max-width: 280px;
+  }
+  
+  .nav-right.mobile-open {
+    display: flex !important;
+    transform: translateX(0) !important;
+  }
+}
