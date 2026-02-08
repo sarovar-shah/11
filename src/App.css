@@ -5610,3 +5610,61 @@ body {
 .page {
   overflow-x: hidden;
 }
+/* ========================================
+   MOBILE FINAL FIXES - NAVBAR + SUBSCRIPTION
+   ======================================== */
+
+@media (max-width: 768px) {
+  /* 1. HIDE NAVBAR GREY LINE COMPLETELY */
+  .navbar {
+    border: none !important;
+    box-shadow: none !important;
+  }
+  
+  .navbar::before,
+  .navbar::after {
+    display: none !important;
+  }
+  
+  /* 2. FIX SUBSCRIPTION SECTION - NO CUTTING */
+  .subscription-replacement {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 1rem !important;
+    margin: 0 auto !important;
+    overflow: visible !important;
+  }
+  
+  .subscription-replacement .subscribe-details {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+  
+  .subscription-replacement .subscribe-form-container {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
+  /* Fix video grid to prevent cutting */
+  .video-grid {
+    padding: 0 1rem !important;
+    width: 100% !important;
+  }
+  
+  .video-card {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Extra small screens - more padding */
+  .subscription-replacement {
+    padding: 0 0.5rem !important;
+  }
+  
+  .video-grid {
+    padding: 0 0.5rem !important;
+  }
+}
